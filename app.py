@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta, timezone
 import hashlib
+import os
+from dotenv import load_dotenv
 import jwt
 from flask import Flask, jsonify, request, make_response
 from flask_restful import Resource, Api
@@ -11,8 +13,8 @@ api = Api(app)
 CORS(app, resources={
      r"/api/*": {"origins": "https://kkp.dimsomnia.cloud", "supports_credentials": True}})
 
-client = MongoClient(
-    'mongodb+srv://masjamad2:masjamad2@learnmongodb.vmcneff.mongodb.net/?retryWrites=true&w=majority')
+MONGO_URL = os.getenv('MONGO_URL')
+client = MongoClient(MONGO_URL)
 db = client['kkp']
 SECRET_KEY = 'LUWAKWHITECOFFEE'
 ALGO = 'HS256'
@@ -142,3 +144,4 @@ api.add_resource(UserProfile, "/api/user/profile", methods=["GET"])
 
 if __name__ == '__main__':
     app.run(debug=True)
+git
