@@ -372,6 +372,27 @@ def put_password():
         return make_response(jsonify({'message': str(e)}), 401)
 
 
+class UserDashboard(Resource):
+    def get(self):
+        usertoken = request.headers.get('Authorization')
+        token = usertoken.split('Bearer ')[1]
+        try:
+            payload = jwt.decode(
+                token,
+                SECRET_KEY,
+                ALGO
+            )
+            userinfo = db.users.find_one({
+                "email": payload["email"]
+            })
+            if userinfo:
+                profile_pic = userinfo['profile_picture']
+                return make_response(jsonify({'path': profile_pic}), 200)
+            print(profile_pic)
+        except jwt.PyJWTError as e:
+            return make_response(jsonify({'message': str(e)}), 401)
+
+
 class UserSuratKematian(Resource):
     def post(self):
         token = request.headers.get('Authorization')
@@ -791,6 +812,7 @@ class UserStatus(Resource):
 api.add_resource(UserHomepage, "/api", methods=["GET"])
 api.add_resource(UserRegister, "/api/register", methods=["POST"])
 api.add_resource(UserLogin, "/api/userLogin", methods=["POST", "GET"])
+api.add_resource(UserDashboard, "/api/user/dashboard", methods=["GET"])
 api.add_resource(UserProfile, "/api/user/profile",
                  methods=["GET", "PUT"])
 api.add_resource(UserSuratKelahiran,
