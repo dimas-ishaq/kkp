@@ -45,7 +45,9 @@ const UserProfile = () => {
         const usercookie = localStorage.getItem("USER_COOKIE")
         axios.defaults.headers.common['Authorization'] = `Bearer ${usercookie}`;
         axios
-            .get(api)
+            .get(api, {
+                headers: { 'Content-Type': 'application/json', }
+            })
             .then((response) => {
                 const { _id, nama_lengkap, nik, alamat, email, profile_picture } = response.data
                 setData({ _id, nama_lengkap, nik, alamat, email, profile_picture })
@@ -116,6 +118,7 @@ const UserProfile = () => {
             .put(api + '/password', formData)
             .then((response) => {
                 notifySuccess(response.data.message)
+                setTimeout(() => window.location.reload(), 2000)
             }).catch((error) => {
                 notifyError(error.response.data.message)
             })
@@ -126,13 +129,13 @@ const UserProfile = () => {
         <>
             <ToastContainer />
             <div className="flex flex-col w-full h-full">
-                <NavUserDashboard />
+                <NavUserDashboard profilePic={data.profile_picture} />
                 <Tab.Group>
                     <div className="grid gap-x-5 gap-y-10 md:grid-cols-2 py-10 md:px-5">
                         <div className="lg:px-18 w-full">
                             <div className="flex flex-col w-full h-full">
                                 <div className="flex w-full items-center px-10 gap-x-10 bg-blue-950/90 py-5 shadow-md">
-                                    <img className='rounded-full w-20 h-20 object-cover border-2 border-gray-100' src={data.profile_picture} alt="profile" />
+                                    <img className='rounded-full w-20 h-20 object-cover border-2 border-gray-100' src={data.profile_picture ? data.profile_picture : '/profile/user.png'} alt="profile" />
                                     <div className="flex flex-col">
                                         <h3 className="text-md font-semibold text-white">
                                             {data.nama_lengkap}

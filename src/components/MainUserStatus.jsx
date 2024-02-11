@@ -26,6 +26,7 @@ const MainUserStatus = ({ data }) => {
     const handleDelete = async () => {
         const item = istarget.item
         const jenis = istarget.jenis
+        setIsOpen(false)
         const usercookie = localStorage.getItem("USER_COOKIE")
         axios.defaults.headers.common['Authorization'] = `Bearer ${usercookie}`;
         console.log(item)
@@ -40,9 +41,11 @@ const MainUserStatus = ({ data }) => {
                 notifySuccess("Permohonan berhasil dibatalkan")
                 setTimeout(() => { window.location.reload() }, 2500)
                 console.log(response)
+                setIsOpen(false)
             }).catch((error) => {
                 notifyError("Erorr terjadi, hub admin")
                 console.log(error)
+                setIsOpen(false)
             })
     }
 

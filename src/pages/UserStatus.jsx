@@ -13,6 +13,7 @@ const UserStatus = () => {
         SKTM: null,
         user_info: null
     })
+    const [profilePic, setProfilePic] = useState(null)
     const api = 'https://db.dimsomnia.cloud/api/user/status'
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -23,6 +24,8 @@ const UserStatus = () => {
             .then((response) => {
                 const { Kelahiran, Kematian, Domisili, SKTM, user_info } = response.data
                 setData({ Kelahiran: Kelahiran, Kematian: Kematian, Domisili: Domisili, SKTM: SKTM, user_info: user_info })
+                setProfilePic(user_info.profile_picture)
+
             }).catch((error) => {
                 console.log(error)
             })
@@ -34,7 +37,7 @@ const UserStatus = () => {
             <div className="flex flex-col w-full h-full" data-aos="fade-down" data-aos-delay="50"
                 data-aos-duration="1000"
                 data-aos-easing="ease-in-out">
-                <NavUserDashboard />
+                <NavUserDashboard profilePic={profilePic} />
                 <MainUserStatus data={data} />
                 <Faq />
                 <Footer />

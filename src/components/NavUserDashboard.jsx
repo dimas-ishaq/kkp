@@ -5,7 +5,8 @@ import { IoMdArrowDropdown } from "react-icons/io";
 import { Popover, Transition } from '@headlessui/react'
 import { Link } from 'react-router-dom';
 
-const NavUserDashboard = () => {
+const NavUserDashboard = ({ profilePic }) => {
+    console.log(profilePic)
     const links = [
         { name: 'Dashboard', href: '/user/dashboard' },
         { name: 'Cek Status', href: '/user/status' },
@@ -27,7 +28,7 @@ const NavUserDashboard = () => {
                                 <span className="sr-only">Digital Sensus dan Administrasi</span>
                                 <img
                                     className="h-8 w-auto"
-                                    src="/images/logo.png"
+                                    src='/images/logo-desa.png'
                                     alt="logo"
                                 />
                             </Link>
@@ -55,7 +56,7 @@ const NavUserDashboard = () => {
                                     <Popover.Button className={`
                 ${open ? 'text-white' : 'text-white/90'}inline-flex items-center`}>
                                         <div className="flex items-center">
-                                            <img src="/images/person.jpg" alt="" className="w-10 h-10 m-auto rounded-full object-cover lg:w-10 lg:h-10 border-2 border-gray-300 hover:border-slate-50 " />
+                                            <img src={profilePic ? profilePic : '/profile/user.png'} alt="" className="w-10 h-10 m-auto rounded-full object-cover lg:w-10 lg:h-10 border-2 border-gray-300 hover:border-slate-50 " />
                                             <span className="px-1"><IoMdArrowDropdown color='white' fontSize={24} className='click' /></span>
                                         </div>
                                     </Popover.Button>
