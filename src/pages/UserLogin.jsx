@@ -18,20 +18,6 @@ const UserLogin = () => {
   useEffect(() => {
     // Ketika komponen pertama kali dimuat, atur posisi scroll window ke atas
     window.scrollTo(0, 0);
-    const usercookie = localStorage.getItem("USER_COOKIE")
-    axios.defaults.headers.common['Authorization'] = `Bearer ${usercookie}`;
-    if (usercookie) {
-      axios
-        .get(api)
-        .then((response) => {
-          console.log(response.data.message)
-          navigate("/user/dashboard");
-        }).catch((error) => {
-          console.log(error)
-        })
-    }
-
-
   }, []);
 
 
