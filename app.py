@@ -44,9 +44,8 @@ FOLDER_PROFILE_PICTURE = os.getenv('FOLDER_PROFILE_PICTURE')
 def add_cors_headers(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization,USER_ID'
-    response.headers['Access-Control-Allow-Methods'] = 'DELETE'
-    response.headers['Access-Control-Allow-Methods'] = 'PUT'
-    # response.headers['Access-Control-Allow-Methods'] = 'PATCH'
+    # Menambahkan semua metode HTTP yang diizinkan
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, PATCH'
     return response
 
 
