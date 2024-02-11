@@ -5,6 +5,7 @@ import Faq from "../components/FaqDashboard"
 import Footer from "../components/Footer"
 
 const UserDashboard = () => {
+  window.scrollTo(0, 0);
   return (
     <>
       <div className="flex flex-col w-full h-full" data-aos="fade-down" data-aos-delay="50"

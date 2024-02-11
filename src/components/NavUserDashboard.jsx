@@ -7,15 +7,14 @@ import { Link } from 'react-router-dom';
 
 const NavUserDashboard = () => {
     const links = [
-        { name: 'Beranda', href: '/user/dashboard' },
+        { name: 'Dashboard', href: '/user/dashboard' },
         { name: 'Cek Status', href: '/user/status' },
     ]
     const profile = [
-        { key: 0, label: 'Home', href: '/' },
+        { key: 0, label: 'Beranda', href: '/' },
         { key: 1, label: 'Profile', href: '/user/profile' },
         { key: 2, label: 'Logout', href: '/user/logout' }
     ]
-
 
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     return (
@@ -24,14 +23,14 @@ const NavUserDashboard = () => {
                 <header className="w-full h-full bg-blue-950">
                     <nav className="flex items-center  justify-between lg:p-2 p-5 lg:px-8" aria-label="Global">
                         <div className="flex lg:flex-1">
-                            <a href="#" className="-m-1.5 p-1.5">
+                            <Link to="/" className="-m-1.5 p-1.5">
                                 <span className="sr-only">Digital Sensus dan Administrasi</span>
                                 <img
                                     className="h-8 w-auto"
                                     src="/images/logo.png"
-                                    alt=""
+                                    alt="logo"
                                 />
-                            </a>
+                            </Link>
                         </div>
                         <div className="flex lg:hidden">
                             <button
