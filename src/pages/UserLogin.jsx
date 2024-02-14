@@ -7,34 +7,25 @@ import { useNavigate } from 'react-router-dom'
 import Cookies from "js-cookie";
 
 const UserLogin = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [data, setData] = useState({ email: "", password: "" })
   const navigate = useNavigate()
   const { register, handleSubmit, formState: { errors } } = useForm()
-  const api = 'https://db.dimsomnia.cloud/api/userLogin'
-
   const notifyError = (data) => toast.error(data, {
     theme: "colored",
+    autoClose: 1000,
   })
-  // Redirect if user is already logged in  
+  const api = 'https://db.dimsomnia.cloud/api/userLogin'
   useEffect(() => {
-    const usercookie = localStorage.getItem("USER_COOKIE")
-    axios.defaults.headers.common['Authorization'] = `Bearer ${usercookie}`;
-    axios
-      .get(api)
-      .then(() => {
-        console.log("On Logged")
-        navigate('/user/dashboard')
-      }).catch(() => {
-        console.log("On Logout")
-        navigate('/userLogin')
-      })
-  }, [])
+    // Ketika komponen pertama kali dimuat, atur posisi scroll window ke atas
+    window.scrollTo(0, 0);
+  }, []);
 
-  const handleLogin = () => {
-    const data = { email, password }
-    axios
-      .post(api, data)
+
+  const handleLogin = async () => {
+    const formData = new FormData
+    formData.append('data', JSON.stringify(data))
+    await axios
+      .post(api, formData)
       .then((response) => {
         const token = response.data.token
         Cookies.set("usertoken", token)
@@ -138,7 +129,7 @@ const UserLogin = () => {
               <img className="mx-auto" src="/images/logo.png" alt="logo" />
             </div>
             <h1 className="md:text-3xl text-2xl font-semibold mb-3 text-gray-900 text-center">Halo, Selamat Datang</h1>
-            <h1 className="text-sm mb-2 text-gray-800 text-center">Portal Digital Sensus dan Administrasi Desa Pandanwangi Silahkan Login</h1>
+            <h1 className="text-sm mb-2 text-gray-800 text-center">Portal Digital Sensus dan Administrasi Desa Pandawangan Silahkan Login</h1>
             <div className="space-y-4">
               <div className="mt-4 text-sm text-gray-600 text-center">
                 <p>Belum mempunyai akun ? <Link to='/userRegister' className="text-blue-600 hover:text-white hover:bg-blue-600 hover:p-1 hover:rounded-md"> Daftar Sekarang </Link>
@@ -147,16 +138,13 @@ const UserLogin = () => {
               <form className="flex flex-col gap-y-1">
                 <div className="flex flex-col gap-y-1">
                   <label className="block text-sm font-medium text-gray-700" htmlFor="email">Email</label>
-                  <input type="text" id="email" {...register("email", { required: 'Email harus di isi', pattern: /^\S+@\S+$/i, onChange: (e) => setEmail(e.target.value) })} className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300" />
+                  <input type="text" id="email" {...register("email", { required: 'Email harus di isi', pattern: /^\S+@\S+$/i, onChange: (e) => setData({ ...data, [e.target.name]: e.target.value }) })} className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300" />
                   <p className='text-xs text-red-600'>{errors.email?.message}</p>
                 </div>
                 <div className="flex flex-col gap-y-1">
                   <label className="block text-sm font-medium text-gray-700" htmlFor="password">Password</label>
                   <input type="password" id="password" {...register("password", {
-                    required: 'Password harus di isi', minLength: {
-                      value: 6,
-                      message: 'Password minimal 6 karakter'
-                    }, onChange: (e) => setPassword(e.target.value)
+                    required: 'Password harus di isi', onChange: (e) => setData({ ...data, [e.target.name]: e.target.value })
                   })} className="mt-1 p-2 w-full border rounded-md focus:border-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300 transition-colors duration-300" />
                   <p className='text-xs text-red-600'>{errors.password?.message}</p>
                 </div>

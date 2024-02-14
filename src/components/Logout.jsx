@@ -10,6 +10,9 @@ const Logout = ({ role }) => {
     localStorage.removeItem('USER_COOKIE')
     localStorage.removeItem('ADMIN_COOKIE')
 
+    localStorage.removeItem('userdata')
+    //window.location.reload()
+
     return <Navigate to={role === 'user' ? "/userLogin" : "/adminLogin"} />
 }
 

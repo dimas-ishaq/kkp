@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useState, Fragment } from 'react'
+import { useState, Fragment, useEffect } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
@@ -8,46 +8,53 @@ import { Dialog, Transition } from '@headlessui/react';
 
 
 const UserRegister = () => {
-    const [nama, setNama] = useState('')
-    const [nik, setNik] = useState('')
-    const [alamat, setAlamat] = useState('')
-    const [email, setEmail] = useState('')
-    const [password, setPass] = useState('')
+    useEffect(() => {
+        // Ketika komponen pertama kali dimuat, atur posisi scroll window ke atas
+        window.scrollTo(0, 0);
+    }, []);
+    const [data, setData] = useState({
+        nama: '',
+        nik: '',
+        alamat: '',
+        email: '',
+        password: ''
+    })
     const [isOpen, setIsOpen] = useState(false)
+    const [onSave, setSave] = useState(false)
     const navigate = useNavigate()
     const { register, handleSubmit, watch, setError, formState: { errors } } = useForm()
 
     const notifyError = (data) => toast.error(data, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
         theme: "colored",
+        autoClose: 1000
     })
     const pass = watch('password')
     const confirmPass = watch('repeat_password')
+    const api = 'https://db.dimsomnia.cloud/api/register'
 
-
-    const handleRegister = () => {
+    const handleRegister = async () => {
         if (pass !== confirmPass) {
-            setError('repeat_password', {
+            return setError('repeat_password', {
                 type: 'custom',
                 message: 'Password dan konfirmasi password harus sama.'
             })
-            return
+
         }
-        const user = { nama, nik, alamat, email, password }
-        axios
-            .post('https://db.dimsomnia.cloud/api/register', user)
+
+        setSave(true)
+        const formData = new FormData
+        formData.append('data', JSON.stringify(data))
+        console.log(formData)
+        await axios
+            .post(api, formData)
             .then(() => {
                 setIsOpen(true)
+                setSave(false)
             }).catch((error) => {
                 notifyError(error.response.data.message)
-                console.log(error.response.data.message)
+                console.log(error)
                 navigate('/userRegister')
+                setSave(false)
             })
 
     }
@@ -69,7 +76,7 @@ const UserRegister = () => {
                                 <label htmlFor="nama" className='font-light'>
                                     Nama Lengkap
                                 </label>
-                                <input type="text" {...register("nama", { required: 'Nama lengkap harus di isi', onChange: (e) => setNama(e.target.value) })} id="nama" className='py-2 px-3 rounded-sm focus:outline-none focus:ring focus:border-blue-500' placeholder='Masukkan Nama Lengkap Anda' />
+                                <input type="text" {...register("nama", { required: 'Nama lengkap harus di isi', onChange: (e) => setData({ ...data, [e.target.name]: e.target.value }) })} id="nama" className='py-2 px-3 rounded-sm focus:outline-none focus:ring focus:border-blue-500' placeholder='Masukkan Nama Lengkap Anda' />
                                 <p className='text-xs text-red-600'>{errors.nama?.message}</p>
                             </div>
                             <div className="flex flex-col gap-y-1 py-2">
@@ -83,7 +90,7 @@ const UserRegister = () => {
                                     }, minLength: {
                                         value: 16,
                                         message: 'NIK minimal harus 16 angka'
-                                    }, onChange: (e) => setNik(e.target.value)
+                                    }, onChange: (e) => setData({ ...data, [e.target.name]: e.target.value })
                                 })} id="nik" className='py-2 px-3 rounded-sm focus:outline-none focus:ring focus:border-blue-500' placeholder='Masukkan NIK 16 Angka' />
                                 <p className='text-xs text-red-600'>{errors.nik?.message}</p>
                             </div>
@@ -91,14 +98,14 @@ const UserRegister = () => {
                                 <label htmlFor="alamat" className='font-light'>
                                     Alamat
                                 </label>
-                                <input type="text" {...register("alamat", { required: 'Alamat lengkap harus di isi', onChange: (e) => setAlamat(e.target.value) })} id="alamat" className='py-2 px-3 rounded-sm focus:outline-none focus:ring focus:border-blue-500' placeholder='Masukkan Alamat Lengkap Anda' />
+                                <input type="text" {...register("alamat", { required: 'Alamat lengkap harus di isi', onChange: (e) => setData({ ...data, [e.target.name]: e.target.value }) })} id="alamat" className='py-2 px-3 rounded-sm focus:outline-none focus:ring focus:border-blue-500' placeholder='Masukkan Alamat Lengkap Anda' />
                                 <p className='text-xs text-red-600'>{errors.alamat?.message}</p>
                             </div>
                             <div className="flex flex-col gap-y-1 py-2">
                                 <label htmlFor="email" className='font-light'>
                                     Email
                                 </label>
-                                <input type="email" {...register("email", { required: 'Email harus di isi', pattern: /^\S+@\S+$/i, onChange: (e) => setEmail(e.target.value) })} id="email" className='py-2 px-3 rounded-sm focus:outline-none focus:ring focus:border-blue-500' placeholder='Masukkan Email Anda' />
+                                <input type="email" {...register("email", { required: 'Email harus di isi', pattern: /^\S+@\S+$/i, onChange: (e) => setData({ ...data, [e.target.name]: e.target.value }) })} id="email" className='py-2 px-3 rounded-sm focus:outline-none focus:ring focus:border-blue-500' placeholder='Masukkan Email Anda' />
                                 <p className='text-xs text-red-600'>{errors.email?.message}</p>
                             </div>
                             <div className="flex flex-col gap-y-1 py-2">
@@ -110,7 +117,7 @@ const UserRegister = () => {
                                         value: 6,
                                         message: 'Password minimal 6 karakter'
                                     }
-                                    , onChange: (e) => setPass(e.target.value)
+                                    , onChange: (e) => setData({ ...data, [e.target.name]: e.target.value })
                                 })} id="password" className='py-2 px-3 rounded-sm focus:outline-none focus:ring focus:border-blue-500' placeholder='********' />
                                 <p className='text-xs text-red-600'>{errors.password?.message}</p>
                             </div>
@@ -124,7 +131,8 @@ const UserRegister = () => {
                                 <p className='text-xs text-red-500'>{errors.repeat_password?.message}</p>
                             </div>
                             <div className="w-full py-5">
-                                <button type='submit' onClick={handleSubmit(handleRegister)} className="w-full font-semibold px-3 py-4 text-white bg-blue-700 hover:bg-blue-600 rounded-md" >Daftar</button>
+                                {onSave && <button disabled type='submit' onClick={handleSubmit(handleRegister)} className="w-full font-semibold px-3 py-4 text-white bg-blue-700 hover:bg-blue-600 rounded-md" >Pendaftaran sedang diproses</button>}
+                                {!onSave && <button type='submit' onClick={handleSubmit(handleRegister)} className="w-full font-semibold px-3 py-4 text-white bg-blue-700 hover:bg-blue-600 rounded-md" >Daftar</button>}
                             </div>
                         </form>
 
@@ -162,12 +170,12 @@ const UserRegister = () => {
                                         <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-green-500 p-6 text-left align-middle shadow-xl transition-all">
                                             <Dialog.Title
                                                 as="h3"
-                                                className="text-lg font-medium leading-6 text-white"
+                                                className="text-lg font-light leading-6 text-white"
                                             >
                                                 Pendaftaran Berhasil
                                             </Dialog.Title>
                                             <div className="mt-2">
-                                                <p className="text-sm text-white">
+                                                <p className="text-sm font-light text-white">
                                                     Silahkan klik tombol dibawah ini untuk login sebagai pengguna. Terimakasih atas kepercayaan anda menggunakan layanan kami :)
                                                 </p>
                                             </div>
@@ -175,7 +183,7 @@ const UserRegister = () => {
                                             <div className="mt-4">
                                                 <Link to='/userLogin'
                                                     type="button"
-                                                    className="inline-flex justify-center rounded-md border border-transparent bg-slate-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                                                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-800 px-4 py-2 text-sm font-light text-white hover:bg-blue-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
                                                 >
                                                     Login Pengguna
                                                 </Link>

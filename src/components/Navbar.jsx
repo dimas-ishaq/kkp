@@ -2,6 +2,9 @@ import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link } from 'react-router-dom'
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import Cookies from 'js-cookie'
 
 const navigation = [
   { name: 'Beranda', href: '/' },
@@ -9,8 +12,25 @@ const navigation = [
   { name: 'Pertanyaan', href: '/pertanyaan' }
 ]
 
-export default function Example() {
+const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const navigate = useNavigate()
+  const api = 'https://db.dimsomnia.cloud/api'
+  const usercookie = Cookies.get('usertoken')
+
+  const handleLogin = () => {
+    if (!usercookie === null) {
+      return navigate('/userLogin')
+    }
+    axios.defaults.headers.common['Authorization'] = `Bearer ${usercookie}`;
+    axios
+      .get(api)
+      .then(() => {
+        navigate('/user/dashboard')
+      }).catch(() => {
+        navigate('/userLogin')
+      })
+  }
 
   return (
 
@@ -45,7 +65,6 @@ export default function Example() {
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-
           </div>
         </nav>
         <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
@@ -74,13 +93,17 @@ export default function Example() {
                     </Link>
                   ))}
                 </div>
-                <div className="py-6">
-                  <Link
-                    to='/userLogin'
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                <div className="flex flex-col gap-y-3 items-center w-full">
+                  <button onClick={handleLogin}
+                    className=" rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 w-full"
                   >
+
                     Masuk
-                  </Link>
+                  </button>
+                  <div className="w-full">
+                    {(usercookie && <Link to='/user/logout' ><button className=' rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 w-full'>Logout</button></Link>)}
+                  </div>
+
                 </div>
               </div>
             </div>
@@ -88,6 +111,9 @@ export default function Example() {
         </Dialog>
       </header>
 
-    </div>
+    </div >
   )
 }
+
+
+export default Navbar

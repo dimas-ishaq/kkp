@@ -28,12 +28,8 @@ const Footer = () => {
                     </div>
                     <div className="flex gap-x-2">
                         <span><MdEmail color='white' /></span>
-                        <p className='text-sm text-slate-50'>Email : sensus.dspandanwangi@jomkot.co.id</p>
+                        <p className='text-sm text-slate-50'>Email : desapandawangan_asri@gmail.com</p>
                     </div>
-
-
-
-
                 </div>
                 <div className="flex flex-col gap-y-2">
                     <div className="flex gap-x-1 py-2">
@@ -44,11 +40,10 @@ const Footer = () => {
                             Alamat
                         </h4>
                     </div>
-
-                    <p className='text-sm text-slate-50 '>Kantor Balai Desa Pandanwangi</p>
-                    <p className='text-sm text-slate-50 '>Dsn/Ds. Pandanwangi, Diwek</p>
-                    <p className='text-sm text-slate-50 '>Kab. Jombang</p>
-                    <p className='text-sm text-slate-50 '>Kode Pos: 17452</p>
+                    <p className='text-sm text-slate-50 '>Kantor Balai Desa Pandawangan</p>
+                    <p className='text-sm text-slate-50 '>Dsn/Ds. Pandawangan, Prapatan Watu</p>
+                    <p className='text-sm text-slate-50 '>Kab. Wetan</p>
+                    <p className='text-sm text-slate-50 '>Kode Pos: 16859</p>
                 </div >
             </div >
         </>

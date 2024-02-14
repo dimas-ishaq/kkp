@@ -15,7 +15,7 @@ const UserMenu = () => {
     ]
     return (
         <><div className="flex flex-col w-full h-full" >
-            <h3 className="text-center font-medium lg:text-3xl md:text-2xl text-xl text-gray-800">Layanan Desa Pandanwangi</h3>
+            <h3 className="text-center font-medium lg:text-3xl md:text-2xl text-xl text-gray-800">Layanan Desa Pandawangan</h3>
             <div className="grid md:grid-cols-3 gap-5 lg:px-32 p-10">
                 {links.map((item) => (
                     <Link key={item.key} to={item.href} className={`${item.bg} text-slate-100 rounded-md border-gray-700 border-3 justify-center py-5 ${item.bgh}`} data-aos="fade-up" data-aos-delay={50 * item.key}
