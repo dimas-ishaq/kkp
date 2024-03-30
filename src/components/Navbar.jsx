@@ -8,8 +8,11 @@ import Cookies from 'js-cookie'
 
 const navigation = [
   { name: 'Beranda', href: '/' },
-  { name: 'Layanan Desa', href: '/layanan' },
-  { name: 'Pertanyaan', href: '/pertanyaan' }
+  { name: 'Profile Desa', href: '#profile-desa' },
+  { name: 'Layanan', href: '#layanan' },
+  { name: 'Berita', href: '#artikel' },
+  { name: 'Pertanyaan', href: '#faq' }
+
 ]
 
 const Navbar = () => {
@@ -34,16 +37,16 @@ const Navbar = () => {
 
   return (
 
-    <div className="bg-white">
-      <header className="absolute inset-x-0 top-0 z-50">
-        <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
-          <div className="flex lg:flex-1">
-            <a href="#" className="-m-1.5 p-1.5">
+    <div className="bg-white border-b">
+      <header className="w-full h-auto flex flex-col overflow-hidden">
+        <nav className="flex items-center justify-between lg:justify-start shadow p-6 lg:px-8" aria-label="Global">
+          <div className="flex lg:flex-initial lg:ps-5 w-48">
+            <a href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Digital Sensus Pandanwangi</span>
               <img
-                className="h-10 w-auto"
-                src="/images/logo-desa.png"
-                alt="logo-desa"
+                className="sm:h-8 h-4 "
+                src="/images/logo.png"
+                alt="logo"
               />
             </a>
           </div>
@@ -57,19 +60,25 @@ const Navbar = () => {
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
-          <div className="hidden lg:flex lg:gap-x-12">
+          <div className="hidden lg:flex lg:gap-x-10">
             {navigation.map((item) => (
-              <Link key={item.name} to={item.href} className="text-md font-bold leading-6 text-gray-900 hover:border-b-[1px] border-indigo-500">
+              <a key={item.name} href={item.href} className="text-sm font-medium leading-6 text-gray-900 hover:border-b-[1px] border-indigo-500">
                 {item.name}
-              </Link>
+              </a>
             ))}
           </div>
-          <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+          <div className="hidden lg:flex lg:flex-1 lg:justify-end gap-x-5">
+            <Link to='/adminLogin'>
+              <button className='px-3.5 py-2 text-indigo-600 bg-purple-50 hover:bg-purple-100 text-sm font-medium rounded-md'>Layanan Admin</button>
+            </Link>
+            <Link to='/userLogin'>
+              <button className='px-3.5 py-2 bg-indigo-600 hover:bg-indigo-500 text-slate-50 text-sm font-medium rounded-md'>Layanan User</button>
+            </Link>
           </div>
         </nav>
         <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
           <div className="fixed inset-0 z-50" />
-          <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+          <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10 overflow-x-hidden">
             <div className="flex items-center justify-between">
               <button
                 type="button"
@@ -84,20 +93,19 @@ const Navbar = () => {
               <div className="-my-6 divide-y divide-gray-500/10">
                 <div className="space-y-2 py-6">
                   {navigation.map((item) => (
-                    <Link
+                    <a
                       key={item.name}
-                      to={item.href}
+                      href={item.href}
                       className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                       {item.name}
-                    </Link>
+                    </a>
                   ))}
                 </div>
                 <div className="flex flex-col gap-y-3 items-center w-full">
                   <button onClick={handleLogin}
                     className=" rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 w-full"
                   >
-
                     Masuk
                   </button>
                   <div className="w-full">

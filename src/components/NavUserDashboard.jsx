@@ -4,9 +4,10 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { IoMdArrowDropdown } from "react-icons/io";
 import { Popover, Transition } from '@headlessui/react'
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
-const NavUserDashboard = ({ profilePic }) => {
-    console.log(profilePic)
+const NavUserDashboard = () => {
+    const { user } = useAuth()
     const links = [
         { name: 'Dashboard', href: '/user/dashboard' },
         { name: 'Cek Status', href: '/user/status' },
@@ -16,12 +17,11 @@ const NavUserDashboard = ({ profilePic }) => {
         { key: 1, label: 'Profile', href: '/user/profile' },
         { key: 2, label: 'Logout', href: '/user/logout' }
     ]
-
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     return (
         <>
-            <div className="flex relative">
-                <header className="w-full h-full bg-blue-950">
+            <div className="bg-blue-950">
+                <header className="w-full h-auto flex flex-col overflow-hidden">
                     <nav className="flex items-center  justify-between lg:p-2 p-5 lg:px-8" aria-label="Global">
                         <div className="flex lg:flex-1">
                             <Link to="/" className="-m-1.5 p-1.5">
@@ -51,12 +51,12 @@ const NavUserDashboard = ({ profilePic }) => {
                             ))}
                         </div>
                         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-                            <div className='relative flex ms-auto w-36 h-16 items-center'>
+                            <div className='flex ms-auto w-36 h-16 items-center'>
                                 <Popover className="absolute right-2 top-3" >
                                     <Popover.Button className={`
                 ${open ? 'text-white' : 'text-white/90'}inline-flex items-center`}>
                                         <div className="flex items-center">
-                                            <img src={profilePic ? profilePic : '/profile/user.png'} alt="" className="w-10 h-10 m-auto rounded-full object-cover lg:w-10 lg:h-10 border-2 border-gray-300 hover:border-slate-50 " />
+                                            <img src={user.profile_picture ? user.profile_picture : '/profile/user.png'} alt="" className="w-10 h-10 m-auto rounded-full object-cover lg:w-10 lg:h-10 border-2 border-gray-300 hover:border-slate-50 " />
                                             <span className="px-1"><IoMdArrowDropdown color='white' fontSize={24} className='click' /></span>
                                         </div>
                                     </Popover.Button>
@@ -100,11 +100,6 @@ const NavUserDashboard = ({ profilePic }) => {
                             <div className="flex items-center justify-between">
                                 <a href="/" className="-m-1.5 p-1.5">
                                     <span className="sr-only">Digital Sensus dan Administrasi Desa </span>
-                                    <img
-                                        className="h-8 w-auto"
-                                        src="/images/logo.png"
-                                        alt=""
-                                    />
                                 </a>
                                 <button
                                     type="button"
@@ -138,7 +133,7 @@ const NavUserDashboard = ({ profilePic }) => {
                         </Dialog.Panel>
                     </Dialog>
                 </header>
-            </div>
+            </div >
         </>
     )
 }

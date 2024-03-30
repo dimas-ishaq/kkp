@@ -1,4 +1,3 @@
-
 import { HiClipboardDocumentList } from "react-icons/hi2";
 import { MdDashboard } from "react-icons/md";
 import { useLocation } from 'react-router-dom';
@@ -6,11 +5,9 @@ import NavDashboard from "../components/NavDashboard";
 import { ImExit } from "react-icons/im";
 import MainPelayanan from "../components/MainPelayanan";
 
-
 const DataPelayanan = () => {
   const location = useLocation()
   const pathname = location.pathname
-
 
   const newLinks = [
     { key: 0, icon: <MdDashboard fontSize={20} />, href: '/admin/dashboard', label: 'Dashboard' },

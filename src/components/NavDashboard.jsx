@@ -92,7 +92,7 @@ const NavDashboard = ({ newLinks, pathname }) => {
                                 leaveFrom="opacity-100 translate-y-0"
                                 leaveTo="opacity-0 translate-y-1"
                             >
-                                <Popover.Panel className="absolute right-1/3 z-10 transform ">
+                                <Popover.Panel className="absolute right-1/3 z- transform ">
                                     <div className="rounded-md flex flex-col bg-sky-800 p-5">
                                         <ul>
                                             {profile.map((item) => (
